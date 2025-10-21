@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Moon, Sun, Menu, X, Package } from "lucide-react";
 import { useTheme } from "next-themes";
+import Link from "next/link"; // ✅ Tambahkan import Link
 
 export default function Navbar() {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -70,10 +71,14 @@ export default function Navbar() {
                                 )}
                             </Button>
                         )}
-                        <Button variant="outline">Login</Button>
+                        {/* ✅ Update Login button dengan Link */}
+                        <Link href="/login">
+                            <Button variant="outline">Login</Button>
+                        </Link>
                         <Button>Get Started</Button>
                     </div>
 
+                    {/* Mobile menu - tambahkan juga link login di mobile */}
                     <div className="md:hidden flex items-center space-x-2">
                         {mounted && (
                             <Button
@@ -94,37 +99,37 @@ export default function Navbar() {
                             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                         >
                             {isMobileMenuOpen ? (
-                                <X className="h-6 w-6" />
+                                <X className="h-5 w-5" />
                             ) : (
-                                <Menu className="h-6 w-6" />
+                                <Menu className="h-5 w-5" />
                             )}
                         </Button>
                     </div>
                 </div>
-            </div>
 
-            {isMobileMenuOpen && (
-                <div className="md:hidden bg-background/95 backdrop-blur-lg border-b border-border">
-                    <div className="px-4 pt-2 pb-4 space-y-2">
+                {/* Mobile Menu */}
+                {isMobileMenuOpen && (
+                    <div className="md:hidden py-4 space-y-4 border-t border-border">
                         {menuItems.map((item) => (
                             <a
                                 key={item.label}
                                 href={item.href}
-                                className="block px-3 py-2 text-base font-medium text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors"
+                                className="block text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
                                 onClick={() => setIsMobileMenuOpen(false)}
                             >
                                 {item.label}
                             </a>
                         ))}
-                        <div className="pt-4 space-y-2">
+                        {/* ✅ Tambahkan Login link di mobile menu */}
+                        <Link href="/login" onClick={() => setIsMobileMenuOpen(false)}>
                             <Button variant="outline" className="w-full">
                                 Login
                             </Button>
-                            <Button className="w-full">Get Started</Button>
-                        </div>
+                        </Link>
+                        <Button className="w-full">Get Started</Button>
                     </div>
-                </div>
-            )}
+                )}
+            </div>
         </nav>
     );
 }

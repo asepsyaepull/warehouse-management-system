@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Play } from "lucide-react";
+import Link from "next/link";
 
 export default function Hero() {
     return (
@@ -10,7 +11,6 @@ export default function Hero() {
             className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16"
         >
             <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-blue-950/20 dark:via-indigo-950/20 dark:to-purple-950/20" />
-
             <div className="absolute inset-0 bg-grid-pattern opacity-[0.02]" />
 
             <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
@@ -36,10 +36,13 @@ export default function Hero() {
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                            <Button size="lg" className="text-base group">
-                                Start Free Trial
-                                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                            </Button>
+                            {/* ✅ Update button dengan Link ke login */}
+                            <Link href="/login">
+                                <Button size="lg" className="text-base group">
+                                    Start Free Trial
+                                    <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                                </Button>
+                            </Link>
                             <Button size="lg" variant="ghost" className="text-base">
                                 <Play className="mr-2 h-5 w-5" />
                                 View Demo
