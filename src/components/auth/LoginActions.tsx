@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { LoginActionsProps } from "@/types/employee";
+import Link from "next/link";
 
 export const LoginActions: React.FC<LoginActionsProps> = ({
     isPinComplete,
@@ -44,26 +45,20 @@ export const LoginActions: React.FC<LoginActionsProps> = ({
 
             {/* Add New Employee Link */}
             <div className="text-center">
-                <Button
-                    type="button"
-                    variant="link"
-                    className="text-cyan-400 hover:text-cyan-300 text-sm font-medium transition-colors duration-200 hover:underline"
-                    onClick={onAddNewEmployee}
-                    aria-label="Add new employee"
-                >
-                    <span className="flex items-center gap-1">
-                        <svg
-                            className="w-4 h-4"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            aria-hidden="true"
-                        >
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                        </svg>
-                        Add new employee
-                    </span>
-                </Button>
+                <Link href="/register"> {/* ✅ Update dengan Link */}
+                    <Button
+                        type="button"
+                        variant="link"
+                        className="text-cyan-400 hover:text-cyan-300 text-sm font-medium transition-colors duration-200 hover:underline"
+                    >
+                        <span className="flex items-center gap-1">
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                            </svg>
+                            Add new employee
+                        </span>
+                    </Button>
+                </Link>
             </div>
         </form>
     );

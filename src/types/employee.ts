@@ -57,3 +57,56 @@ export interface LoginActionsProps {
     onSubmit: (e: React.FormEvent) => void;
     onAddNewEmployee: () => void;
 }
+
+/**
+ * Form data untuk registrasi employee baru
+ */
+export interface EmployeeRegistrationData {
+    // Step 1: Personal Information
+    fullName: string;
+    dateOfBirth: string;
+    contactNumber: string;
+    address: string;
+    emergencyContact: string;
+
+    // Step 2: Job Details
+    employeeId: string;
+    jobRole: string;
+    employmentType: string;
+    dateOfJoining: string;
+
+    // Step 3: Access & Permissions
+    accessLevel: string;
+    profilePicture: File | null;
+}
+
+/**
+ * Job role options
+ */
+export const JOB_ROLES = [
+    { value: "driver-assistant", label: "Driver Assistant" },
+    { value: "warehouse-manager", label: "Warehouse Manager" },
+    { value: "inventory-clerk", label: "Inventory Clerk" },
+    { value: "forklift-operator", label: "Forklift Operator" },
+    { value: "supervisor", label: "Supervisor" },
+] as const;
+
+/**
+ * Employment type options
+ */
+export const EMPLOYMENT_TYPES = [
+    { value: "full-time", label: "Full Time" },
+    { value: "part-time", label: "Part Time" },
+    { value: "contract", label: "Contract" },
+    { value: "temporary", label: "Temporary" },
+] as const;
+
+/**
+ * Access level options
+ */
+export const ACCESS_LEVELS = [
+    { value: "basic", label: "Basic - View Only" },
+    { value: "standard", label: "Standard - View & Edit" },
+    { value: "advanced", label: "Advanced - Full Access" },
+    { value: "admin", label: "Admin - All Permissions" },
+] as const;

@@ -1,6 +1,11 @@
 export { default as EmployeeLogin } from "./EmployeeLogin";
+export { default as EmployeeRegister } from "./EmployeeRegister";
 export { WarehouseQuoteSection } from "./WarehouseQuoteSection";
 export { LoginPanel } from "./LoginPanel";
 export { EmployeeSelector } from "./EmployeeSelector";
 export { PinInput } from "./PinInput";
 export { LoginActions } from "./LoginActions";
+export { StepIndicator } from "./StepIndicator";
+export { RegisterStep1 } from "./RegisterStep1";
+export { RegisterStep2 } from "./RegisterStep2";
+export { RegisterStep3 } from "./RegisterStep3";
