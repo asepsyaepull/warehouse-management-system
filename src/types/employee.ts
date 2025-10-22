@@ -59,6 +59,29 @@ export interface LoginActionsProps {
 }
 
 /**
+ * Props untuk komponen LoginActions
+ * ✅ Updated dengan isLoading
+ */
+export interface LoginActionsProps {
+    isPinComplete: boolean;
+    selectedEmployee: Employee | null;
+    isLoading?: boolean; // ✅ Tambahkan
+    onSubmit: (e: React.FormEvent) => void;
+    onAddNewEmployee: () => void;
+}
+
+/**
+ * ✅ Tambahkan: User session data yang disimpan di localStorage
+ */
+export interface UserSession {
+    id: string;
+    name: string;
+    role: string;
+    avatar: string;
+    loginTime: string;
+}
+
+/**
  * Form data untuk registrasi employee baru
  */
 export interface EmployeeRegistrationData {

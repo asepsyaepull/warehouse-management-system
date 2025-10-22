@@ -1,16 +1,7 @@
-/**
- * ============================================
- * AUTHENTICATION UTILITIES
- * ============================================
- * Helper functions untuk authentication
- */
-
-import { LoginCredentials, LoginResponse } from "@/types/employee";
+import { LoginCredentials, LoginResponse, UserSession } from "@/types/employee";
 
 /**
  * Authenticate employee login via API
- * @param credentials - Employee ID dan PIN
- * @returns Promise dengan login response
  */
 export async function authenticateEmployee(
     credentials: LoginCredentials
@@ -40,19 +31,60 @@ export async function authenticateEmployee(
 }
 
 /**
+ * ✅ Store user session di localStorage
+ */
+export function storeUserSession(user: UserSession): void {
+    if (typeof window !== "undefined") {
+        localStorage.setItem("currentUser", JSON.stringify(user));
+    }
+}
+
+/**
+ * ✅ Get current user session
+ */
+export function getCurrentUser(): UserSession | null {
+    if (typeof window !== "undefined") {
+        const userStr = localStorage.getItem("currentUser");
+        if (userStr) {
+            try {
+                return JSON.parse(userStr);
+            } catch {
+                return null;
+            }
+        }
+    }
+    return null;
+}
+
+/**
+ * ✅ Check if user is authenticated
+ */
+export function isAuthenticated(): boolean {
+    return getCurrentUser() !== null;
+}
+
+/**
+ * ✅ Logout user
+ */
+export function logout(): void {
+    if (typeof window !== "undefined") {
+        localStorage.removeItem("currentUser");
+        localStorage.removeItem("authToken");
+        window.location.href = "/login";
+    }
+}
+
+/**
  * Store authentication token
- * @param token - JWT token dari server
  */
 export function storeAuthToken(token: string): void {
     if (typeof window !== "undefined") {
         localStorage.setItem("authToken", token);
-        // Atau gunakan httpOnly cookies untuk security yang lebih baik
     }
 }
 
 /**
  * Get stored authentication token
- * @returns Auth token atau null
  */
 export function getAuthToken(): string | null {
     if (typeof window !== "undefined") {
@@ -62,18 +94,10 @@ export function getAuthToken(): string | null {
 }
 
 /**
- * Remove authentication token (logout)
+ * Clear authentication token (logout)
  */
 export function clearAuthToken(): void {
     if (typeof window !== "undefined") {
         localStorage.removeItem("authToken");
     }
-}
-
-/**
- * Check if user is authenticated
- * @returns Boolean indicating auth status
- */
-export function isAuthenticated(): boolean {
-    return getAuthToken() !== null;
 }

@@ -12,6 +12,7 @@ interface LoginPanelProps {
     isError: boolean;
     errorMessage: string;
     isPinComplete: boolean;
+    isLoading: boolean; // ✅ Tambahkan prop
     inputRefs: React.MutableRefObject<(HTMLInputElement | null)[]>;
     onSelectEmployee: (employee: Employee) => void;
     onPinChange: (index: number, value: string) => void;
@@ -30,6 +31,7 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({
     isError,
     errorMessage,
     isPinComplete,
+    isLoading, // ✅ Destructure prop
     inputRefs,
     onSelectEmployee,
     onPinChange,
@@ -41,28 +43,28 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({
     setIsError,
 }) => {
     return (
-        <div className="w-full min-h-screen md:w-1/2 bg-slate-900 flex items-center justify-center p-4 sm:p-6 md:p-8 lg:p-12">
-            <div className="w-full max-w-md space-y-6 sm:space-y-8">
+        <div className="w-full md:w-1/2 bg-slate-900 flex items-center justify-center p-6 md:p-12">
+            <div className="w-full max-w-md space-y-8">
 
                 {/* Header - Logo & Title */}
-                <div className="text-center space-y-4 sm:space-y-6">
+                <div className="text-center space-y-6">
                     {/* Logo */}
-                    <div className="flex items-center justify-center gap-2 sm:gap-3">
+                    <div className="flex items-center justify-center gap-3">
                         <div className="relative">
-                            <Package className="w-7 h-7 sm:w-8 sm:h-8 text-cyan-400" aria-hidden="true" />
-                            <div className="absolute -bottom-1 -right-1 w-2.5 h-2.5 sm:w-3 sm:h-3 bg-cyan-400 rounded-full animate-pulse" />
+                            <Package className="w-8 h-8 text-cyan-400" aria-hidden="true" />
+                            <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-cyan-400 rounded-full animate-pulse" />
                         </div>
-                        <h1 className="text-xl sm:text-2xl font-bold text-white">
+                        <h1 className="text-2xl font-bold text-white">
                             Ware<span className="text-cyan-400">Track</span>
                         </h1>
                     </div>
 
                     {/* Title */}
                     <div>
-                        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-2">
+                        <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">
                             Employee login
                         </h2>
-                        <p className="text-slate-400 text-xs sm:text-sm">
+                        <p className="text-slate-400 text-sm">
                             Choose your account to start work.
                         </p>
                     </div>
@@ -93,13 +95,14 @@ export const LoginPanel: React.FC<LoginPanelProps> = ({
                 <LoginActions
                     isPinComplete={isPinComplete}
                     selectedEmployee={selectedEmployee}
+                    isLoading={isLoading} // ✅ Pass isLoading prop
                     onSubmit={onSubmit}
                     onAddNewEmployee={onAddNewEmployee}
                 />
 
                 {/* Footer Info */}
-                <div className="pt-6 sm:pt-8 border-t border-slate-800">
-                    <p className="text-xs text-slate-500 text-center px-4">
+                <div className="pt-8 border-t border-slate-800">
+                    <p className="text-xs text-slate-500 text-center">
                         Need help? Contact your administrator or IT support
                     </p>
                 </div>

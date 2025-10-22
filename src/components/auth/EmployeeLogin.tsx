@@ -6,21 +6,17 @@ import { EMPLOYEES } from "@/constants/employees";
 import { WarehouseQuoteSection } from "./WarehouseQuoteSection";
 import { LoginPanel } from "./LoginPanel";
 
-/**
- * Main Employee Login Component
- * Halaman login untuk karyawan warehouse
- */
 const EmployeeLogin = () => {
-    // State untuk carousel quotes
     const [activeQuoteIndex, setActiveQuoteIndex] = useState(0);
 
-    // Custom hook untuk login logic
+    // ✅ Destructure isLoading dari hook
     const {
         selectedEmployee,
         pin,
         isError,
         errorMessage,
         isPinComplete,
+        isLoading, // ✅ Tambahkan ini
         inputRefs,
         handlePinChange,
         handleKeyDown,
@@ -48,6 +44,7 @@ const EmployeeLogin = () => {
                 isError={isError}
                 errorMessage={errorMessage}
                 isPinComplete={isPinComplete}
+                isLoading={isLoading} // ✅ Pass isLoading prop
                 inputRefs={inputRefs}
                 onSelectEmployee={handleSelectEmployee}
                 onPinChange={handlePinChange}

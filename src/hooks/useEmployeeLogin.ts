@@ -1,16 +1,12 @@
-/**
- * ============================================
- * CUSTOM HOOK: useEmployeeLogin
- * ============================================
- * Menangani semua logic untuk employee login
- * Memisahkan business logic dari UI components
- */
-
 import { useState, useRef } from "react";
+import { useRouter } from "next/navigation"; // ✅ Pastikan ini untuk App Router
+// import { useRouter } from "next/router"; // ❌ Jangan pakai ini jika App Router
 import { Employee, LoginCredentials } from "@/types/employee";
 import { CONFIG } from "@/constants/employees";
 
 export const useEmployeeLogin = () => {
+    const router = useRouter();
+
     // ============================================
     // STATE MANAGEMENT
     // ============================================
@@ -20,6 +16,7 @@ export const useEmployeeLogin = () => {
     const [isError, setIsError] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const [isRedirecting, setIsRedirecting] = useState(false);
 
     const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
@@ -102,6 +99,7 @@ export const useEmployeeLogin = () => {
 
     /**
      * Handle login submit
+     * ✅ SIMPLIFIED: Single redirect strategy
      */
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -109,6 +107,8 @@ export const useEmployeeLogin = () => {
         if (!selectedEmployee || !isPinComplete) return;
 
         setIsLoading(true);
+        setIsError(false);
+        setErrorMessage("");
 
         const enteredPin = pin.join("");
         const credentials: LoginCredentials = {
@@ -117,44 +117,79 @@ export const useEmployeeLogin = () => {
         };
 
         try {
-            // TODO: Replace with actual API call
-            // const response = await authenticateEmployee(credentials);
-
             // Simulasi API call
-            await new Promise(resolve => setTimeout(resolve, 500));
+            await new Promise(resolve => setTimeout(resolve, 800));
 
             if (enteredPin === CONFIG.CORRECT_PIN) {
-                console.log("✅ Login successful!", {
-                    employee: selectedEmployee.name,
+                // Session data
+                const sessionData = {
+                    id: selectedEmployee.id,
+                    name: selectedEmployee.name,
                     role: selectedEmployee.role,
-                    timestamp: new Date().toISOString(),
-                });
+                    avatar: selectedEmployee.avatar,
+                    loginTime: new Date().toISOString(),
+                    accessToken: `mock_token_${selectedEmployee.id}_${Date.now()}`,
+                    expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+                };
 
-                // TODO: Navigate to dashboard
-                // router.push("/dashboard");
+                // Simpan ke localStorage
+                if (typeof window !== "undefined") {
+                    localStorage.setItem("currentUser", JSON.stringify(sessionData));
+                    localStorage.setItem("isAuthenticated", "true");
+                    console.log("✅ Login successful!", sessionData);
+                }
+
+                setIsRedirecting(true);
+
+                // ✅ Single redirect strategy
+                console.log("🔄 Redirecting to /dashboard...");
+
+                // Method 1: Next.js Router (preferred)
+                router.push("/dashboard");
+
+                // Method 2: Force reload after short delay (backup)
+                setTimeout(() => {
+                    if (window.location.pathname !== "/dashboard") {
+                        console.log("⚠️ Fallback: Using window.location");
+                        window.location.href = "/dashboard";
+                    }
+                }, 1000);
+
             } else {
                 throw new Error("Invalid PIN");
             }
         } catch (error) {
+            console.error("❌ Login error:", error);
+
             setIsError(true);
-            setErrorMessage("Invalid PIN. Please try again.");
+            setErrorMessage(
+                error instanceof Error && error.message === "Invalid PIN"
+                    ? "Invalid PIN. Please try again."
+                    : "Login failed. Please try again."
+            );
 
             setTimeout(() => {
                 resetPin();
                 inputRefs.current[0]?.focus();
             }, CONFIG.ERROR_RESET_DELAY);
-        } finally {
+
+            setIsRedirecting(false);
             setIsLoading(false);
         }
     };
 
     /**
      * Handle add new employee
+     * Better navigation handling
      */
     const handleAddNewEmployee = () => {
-        console.log("Navigate to: /employees/new");
-        // TODO: Implement navigation
-        // router.push("/employees/new");
+        try {
+            console.log("📝 Navigate to: /register");
+            router.push("/register");
+        } catch (error) {
+            console.error("❌ Navigation failed:", error);
+            setErrorMessage("Failed to navigate to registration page");
+        }
     };
 
     // ============================================
@@ -170,6 +205,7 @@ export const useEmployeeLogin = () => {
         isLoading,
         isPinComplete,
         inputRefs,
+        isRedirecting,
 
         // Handlers
         handlePinChange,
